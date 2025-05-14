@@ -7,7 +7,7 @@ import FeaturedProducts from "@/components/FeaturedProducts";
 import products from "@/data/products";
 import { motion } from "framer-motion";
 import { AnimatedCarousel } from "@/components/ui/carousel-animated";
-import { staggerContainer, fadeUpVariant, floatingAnimation, pulseAnimation } from "@/lib/utils";
+import { staggerContainer, fadeUpVariant, fadeInScale } from "@/lib/utils";
 
 const heroImages = [
   "https://cdn.pixabay.com/photo/2016/04/07/06/53/bmw-1313343_1280.jpg",
@@ -15,6 +15,34 @@ const heroImages = [
   "https://cdn.pixabay.com/photo/2014/07/05/08/30/motorcycle-racing-384613_1280.jpg",
   "https://cdn.pixabay.com/photo/2015/09/08/21/02/superbike-930715_1280.jpg"
 ];
+
+// Fixed animation variants with proper repeatType values
+const floatingAnimation = {
+  initial: {},
+  animate: {
+    y: [0, -10, 0],
+    transition: {
+      duration: 3,
+      repeat: Infinity,
+      repeatType: "mirror" as const, // Using "as const" to ensure correct type
+      ease: "easeInOut"
+    }
+  }
+};
+
+// Fixed pulse animation variant
+const pulseAnimation = {
+  initial: {},
+  animate: {
+    scale: [1, 1.05, 1],
+    transition: {
+      duration: 2,
+      repeat: Infinity,
+      repeatType: "mirror" as const, // Using "as const" to ensure correct type
+      ease: "easeInOut"
+    }
+  }
+};
 
 const Index = () => {
   return (
