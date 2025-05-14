@@ -1,9 +1,9 @@
 
 import { useState, useRef, useCallback } from "react";
-import { motion } from "framer-motion";
+import { motion, HTMLMotionProps } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-interface SpotlightCardProps extends React.HTMLAttributes<HTMLDivElement> {
+interface SpotlightCardProps extends Omit<HTMLMotionProps<"div">, "onMouseMove" | "onMouseLeave"> {
   children: React.ReactNode;
   className?: string;
   spotlightColor?: string;

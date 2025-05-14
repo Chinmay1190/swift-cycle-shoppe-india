@@ -1,6 +1,6 @@
 
 import { cn } from "@/lib/utils"
-import { motion } from "framer-motion"
+import { motion, HTMLMotionProps } from "framer-motion"
 
 interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {
   variant?: "pulse" | "shimmer" | "wave" | "none";
@@ -35,17 +35,24 @@ function Skeleton({
 }
 
 // Motion version of the skeleton
+interface MotionSkeletonProps extends Omit<HTMLMotionProps<"div">, "animate"> {
+  className?: string;
+  variant?: "pulse" | "shimmer" | "wave" | "none";
+  animate?: HTMLMotionProps<"div">["animate"];
+}
+
 function MotionSkeleton({
   className,
   variant = "pulse",
+  animate: customAnimate,
   ...props
-}: SkeletonProps) {
+}: MotionSkeletonProps) {
   // Get the base variant class
   const variantClass = variant === "pulse" ? "" : variant === "none" ? "" :
     "before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent relative overflow-hidden";
   
   // For pulse variant, use framer-motion animations
-  const pulseAnimation = variant === "pulse" ? {
+  const defaultPulseAnimate = variant === "pulse" ? {
     opacity: [0.5, 0.8, 0.5],
     transition: {
       repeat: Infinity,
@@ -53,11 +60,13 @@ function MotionSkeleton({
       ease: "easeInOut"
     }
   } : {};
+  
+  const animateProps = customAnimate || defaultPulseAnimate;
 
   return (
     <motion.div
       className={cn("rounded-md bg-muted", variantClass, className)}
-      animate={variant === "pulse" ? pulseAnimation : {}}
+      animate={animateProps}
       {...props}
     />
   );
