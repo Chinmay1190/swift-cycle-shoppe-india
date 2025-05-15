@@ -1,10 +1,10 @@
 
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, HTMLMotionProps } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
-interface AnimatedCardProps extends React.HTMLAttributes<HTMLDivElement> {
+interface AnimatedCardProps extends Omit<HTMLMotionProps<"div">, "onDrag"> {
   title?: string;
   description?: string;
   image?: string;
