@@ -1,10 +1,10 @@
 
 import React, { useState } from "react";
-import { motion, HTMLMotionProps } from "framer-motion";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
-interface AnimatedCardProps extends Omit<HTMLMotionProps<"div">, "onDrag"> {
+interface AnimatedCardProps extends React.HTMLAttributes<HTMLDivElement> {
   title?: string;
   description?: string;
   image?: string;
@@ -45,34 +45,19 @@ export function AnimatedCard({
     }
   };
   
-  const cardMotion = {
-    rest: { 
-      scale: 1, 
-      boxShadow: "0px 0px 0px rgba(0,0,0,0.1)",
-      y: 0
-    },
-    hover: { 
-      scale: variant === "hover3d" ? 1 : 1.02, 
-      boxShadow: "0px 5px 10px rgba(0,0,0,0.15)",
-      y: -5
-    }
-  };
-  
-  const imageMotion = {
-    rest: { scale: 1 },
-    hover: { scale: 1.05 }
-  };
-  
   return (
     <motion.div
       className={cn("relative", getVariantClass(), className)}
-      initial="rest"
-      whileHover="hover"
-      animate={hovered ? "hover" : "rest"}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ 
+        scale: variant === "hover3d" ? 1 : 1.02, 
+        y: -5,
+        boxShadow: "0px 5px 10px rgba(0,0,0,0.15)"
+      }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      variants={cardMotion}
-      transition={{ duration: 0.3, ease: "easeOut" }}
       {...props}
     >
       <Card className={cn(
@@ -85,7 +70,8 @@ export function AnimatedCard({
           <div className={cn("overflow-hidden", getAspectRatioClass())}>
             <motion.div
               className="h-full w-full"
-              variants={imageMotion}
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.5 }}
             >
               <img 
                 src={image} 
